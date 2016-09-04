@@ -6,20 +6,19 @@
   var awsMock = require('../../mocks/services/aws-lib');
 
   describe('aws item service', function() {
-    var service;
-    var clientMock;
+    var clientMock = {
+      call: jasmine.createSpy('call')
+    };
 
     beforeEach(function() {
-      clientMock = function(){
-        return {};
-      };
       spyOn(awsLib, 'createProdAdvClient')
-        .andCallFake(clientMock);
-      service = itemService.init(awsLib);
+        .andCallFake(function() {
+          return clientMock;
+        });
+      itemService.init(awsLib);
     });
 
-    it('should init product client', function(){
-      expect(service).not.toBeNull();
+    it('should init product client', function() {
       expect(awsLib.createProdAdvClient).toHaveBeenCalledWith(
         jasmine.any(String),
         jasmine.any(String),
@@ -31,15 +30,27 @@
 
     it('should return items', function() {
       //ARRANGE
-      awsLib.createProdAdvClient.andCallFake(function(){});
+      var actual;
+      clientMock.call.andCallFake(function(operation, search, callback) {
+        callback(null, awsMock.itemSearch);
+      });
       //ACT
-      service.search('All', 'iphone', '3');
+      itemService.search('All', 'iphone', '3', function(err, result) {
+        actual = result;
+      });
       //ASSERT
-      expect(awsLib.call).toHaveBeenCalledWith('ItemSearch', {
+      var expected = {
+        title: 'iPhone 6s Protector de Pantalla',
+        price: 'EUR 1,84'
+      };
+      expect(clientMock.call).toHaveBeenCalledWith('ItemSearch', {
         SearchIndex: 'All',
         Keywords: 'iphone',
         ItemPage: '3'
       }, jasmine.any(Function));
+      expect(actual.totalPages).toBe(5238);
+      expect(actual.items.length).toBe(3);
+      expect(actual.items[0]).toEqual(expected);
     });
   });
 })();

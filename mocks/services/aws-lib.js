@@ -147,7 +147,7 @@ var itemSearch = {
         "Publisher": "JETech",
         "Size": "0,3mm",
         "Studio": "JETech",
-        "Title": "iPhone 6s Protector de Pantalla, JETech 2-Pack [3D Touch Compatibles] iPhone 6s Vidrio Templado Protector de Pantalla Empaquetado al por Menor para iPhone 6s y iPhone 6 4.7 - 0803",
+        "Title": "iPhone 6s Protector de Pantalla",
         "UPC": "810298028170",
         "UPCList": {
           "UPCListElement": "810298028170"
@@ -282,7 +282,7 @@ var itemSearch = {
         "ProductTypeName": "PHONE",
         "Publisher": "Apple Computer",
         "Studio": "Apple Computer",
-        "Title": "Apple iPhone 6 64GB 4G Gris - Smartphone (SIM Ãºnica, iOS, NanoSIM, EDGE, GSM, HSDPA, HSPA+, UMTS, LTE)",
+        "Title": "Apple iPhone 6 64GB 4G Gris - Smartphone",
         "UPC": "888462063852",
         "UPCList": {
           "UPCListElement": "888462063852"
@@ -398,7 +398,7 @@ var itemSearch = {
         "Publisher": "Apple Computer",
         "Size": "14 cm (5.5\")",
         "Studio": "Apple Computer",
-        "Title": "Apple iPhone 6s Plus 128GB 4G Gold - smartphones (Single SIM, iOS, NanoSIM, EDGE, GSM, DC-HSDPA, HSPA+, TD-SCDMA, UMTS, LTE)",
+        "Title": "Apple iPhone 6s Plus 128GB 4G Gold - smartphones",
         "UPC": "888462500654",
         "UPCList": {
           "UPCListElement": ["888462500654", "888462501552"]

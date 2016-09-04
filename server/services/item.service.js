@@ -18,12 +18,13 @@ function init(aws) {
 
 
 function search(index, search, page, callback) {
-  console.log('search petition');
-  client.call("ItemSearch", {
+  var query =  {
     SearchIndex: index,
     Keywords: search,
     ItemPage: page
-  }, function(err, result) {
+  };
+
+  client.call('ItemSearch', query, function(err, result) {
     if (err) {
       return callback(err);
     }
@@ -31,10 +32,28 @@ function search(index, search, page, callback) {
       return callback('Not Found');
     }
 
-    return callback(null, result.Items);
+    return callback(null, {
+      totalPages: parseInt(result.Items.TotalPages, 10),
+      items: getItemAttributes(result.Items.Item)
+    });
   });
 }
 
+function getItemAttributes(items) {
+  var list = [];
+
+  items.forEach(function(item) {
+    var parsed = {
+      title: item.ItemAttributes.Title
+    };
+    if (item.OfferSummary.LowestNewPrice) {
+      parsed.price = item.OfferSummary.LowestNewPrice.FormattedPrice;
+    }
+    list.push(parsed);
+  });
+
+  return list;
+}
 
 
 module.exports = {
