@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server/app.js"
+    "test": "jasmine-node test/**/*.spec.js",
+    "start": "node server/app.js",
+    "postinstall": "npm install jasmine-node -g"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,7 @@
   "dependencies": {
     "aws-lib": "^0.3.0",
     "express": "^4.14.0",
+    "jasmine-node": "^1.14.5",
     "mongodb": "^2.2.1"
   }
 }
