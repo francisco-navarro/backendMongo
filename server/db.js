@@ -1,16 +1,15 @@
-var client = require('mongodb').MongoClient;
-
-var url = 'mongodb://localhost:27017/learnyoumongo';
-var data;
-
-client.connect(url, function(err, db) {
-  data = db;
-});
-
-function collection(name) {
-  return data.name;
-}
-
-module.exports = {
-  collection: collection
+var mongoose = require('mongoose');
+require('./models/Users');
+require('./models/Items');
+var db = {
+	User : mongoose.model('User'),
+	Item : mongoose.model('Item')
 };
+var mongoip = process.env.OPENSHIFT_MONGODB_DB_HOST || 'localhost',
+	mongoport = process.env.OPENSHIFT_MONGODB_DB_PORT || '27017',
+	mongoauth = mongoip === 'localhost' ? '' : 'admin:dvJQ4FJ3cm7G@',
+	dbname = 'amazon';
+
+	mongoose.connect('mongodb://'+mongoauth+mongoip+':'+mongoport+'/'+dbname);
+
+module.exports = db;
