@@ -1,4 +1,4 @@
-var aws = require('aws-lib');
+var aws = require('aws-item-lib');
 var itemService = require('./../services/item.service');
 
 var req = itemService.init(aws);

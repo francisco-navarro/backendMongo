@@ -8,7 +8,6 @@ var options = {
 var client;
 
 function init(aws) {
-  console.log('Configuring AWS server...');
 
   client = aws.createProdAdvClient(credentials.accessKey,
     credentials.secretAccessKey,
@@ -28,10 +27,7 @@ function search(index, search, page, callback) {
     ItemPage: page
   };
 
-  client.call('ItemSearch', query, function(err, result) {
-    if (err) {
-      return callback(err);
-    }
+  client.call('ItemSearch', query, function(result) {
     if (!result.Items) {
       return callback('Not Found');
     }

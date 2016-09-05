@@ -2,7 +2,7 @@
   'use strict';
 
   var itemService = require('../../server/services/item.service');
-  var awsLib = require('aws-lib');
+  var awsLib = require('aws-item-lib');
   var awsMock = require('../../mocks/services/aws-lib');
 
   describe('aws item service', function() {
@@ -32,7 +32,7 @@
       //ARRANGE
       var actual;
       clientMock.call.andCallFake(function(operation, search, callback) {
-        callback(null, awsMock.itemSearch);
+        callback(awsMock.itemSearch);
       });
       //ACT
       itemService.search('All', 'iphone', '3', function(err, result) {
