@@ -40,6 +40,7 @@
       });
       //ASSERT
       var expected = {
+        id: 'B00U5M3BDQ',
         title: 'iPhone 6s Protector de Pantalla',
         price: 'EUR 1,84'
       };

@@ -16,9 +16,13 @@ function init(aws) {
     options);
 }
 
+function get() {
+  //TODO
+}
+
 
 function search(index, search, page, callback) {
-  var query =  {
+  var query = {
     SearchIndex: index,
     Keywords: search,
     ItemPage: page
@@ -44,6 +48,7 @@ function getItemAttributes(items) {
 
   items.forEach(function(item) {
     var parsed = {
+      id: item.ASIN,
       title: item.ItemAttributes.Title
     };
     if (item.OfferSummary.LowestNewPrice) {
@@ -58,5 +63,6 @@ function getItemAttributes(items) {
 
 module.exports = {
   init: init,
-  search: search
+  search: search,
+  get: get
 };
