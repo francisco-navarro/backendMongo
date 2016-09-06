@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "istanbul cover --include-all-sources jasmine-node test/**/*.spec.js",
-    "start": "node server/app.js",
-    "postinstall": "npm install jasmine-node -g"
+    "start": "node server/app.js"
   },
   "repository": {
     "type": "git",
