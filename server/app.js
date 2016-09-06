@@ -4,6 +4,8 @@ var cron = require('node-cron');
 // var db = require('./db');
 var itemController = require('./controllers/item.controller')();
 var app = express();
+var fs = require('fs');
+var path = require('path');
 
 var server_port = process.env.OPENSHIFT_NODEJS_PORT || 3000;
 var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
@@ -50,8 +52,18 @@ app.get('/users/:user', function(req, res, next) {
   });
 });
 
+app.get('/log', function(req, res, next) {
+  fs.readFile(path.join(__dirname, '/services/created-logfile.log'), 'utf8', function (err,data) {
+    if (err) {
+      return console.log(err);
+    }
+
+    res.send(data);
+  });
+});
+
 app.listen(server_port, server_ip_address, function() {
   console.log('App listening on port ' + server_port);
 });
 
-cron.schedule('* */6 * * *', itemController.watchPrices);
+cron.schedule('* */1 * * *', itemController.watchPrices);
