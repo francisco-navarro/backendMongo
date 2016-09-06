@@ -1,7 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var cron = require('node-cron');
-// var db = require('./db');
+var db = require('./models/db');
 var itemController = require('./controllers/item.controller')();
 var app = express();
 

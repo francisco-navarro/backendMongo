@@ -4,7 +4,7 @@ var itemService = require('./../services/item.service');
 var pushNotifier = require('./../services/pushNotifier.service');
 var successCode = 200;
 var almostSuccessCode = 209;
-var db = require('./../db');
+var db = require('./../models/db');
 
 var dbItems;
 
