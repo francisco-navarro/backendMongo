@@ -51,6 +51,6 @@ app.listen(3000, function() {
   console.log('App listening on port 3000!');
 });
 
-cron.schedule('*/10 * * * * *', function(){
-  itemController.watchPrices();
-});
+
+itemController.watchPrices();
+cron.schedule('*/10 * * * *', itemController.watchPrices);
