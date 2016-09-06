@@ -1,8 +1,8 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var itemController = require('./controllers/item.controller');
-var db = require('./db');
-
+var cron = require('node-cron');
+// var db = require('./db');
+var itemController = require('./controllers/item.controller')();
 var app = express();
 
 app.use(bodyParser.json());
@@ -17,8 +17,11 @@ app.get('/items', itemController.get);
 
 app.get('/users', function(req, res, next) {
   db.User.find({}, function(err, users){
-    if(err){ return next(err); }
-    res.json(users);
+    if (err){
+      return next(err);
+    }
+
+    return res.json(users);
   });
 });
 
@@ -46,4 +49,8 @@ app.get('/users/:user', function(req, res, next) {
 
 app.listen(3000, function() {
   console.log('App listening on port 3000!');
+});
+
+cron.schedule('*/10 * * * * *', function(){
+  itemController.watchPrices();
 });

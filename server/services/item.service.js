@@ -8,12 +8,13 @@ var options = {
 var client;
 
 var Item = function(data){
-  this.id = data.ASIN,
-  this.title = data.ItemAttributes.Title
+  this.asin = data.ASIN,
+  this.description = data.ItemAttributes.Title
   if (data.OfferSummary.LowestNewPrice) {
-    this.amount = data.OfferSummary.LowestNewPrice.Amount;
+    this.price = data.OfferSummary.LowestNewPrice.Amount;
     this.currency = data.OfferSummary.LowestNewPrice.CurrencyCode;
   }
+  this.formattedPrice = (this.price / 100) + this.currency;
 };
 
 function init(aws) {
