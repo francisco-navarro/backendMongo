@@ -5,11 +5,18 @@ var db = {
 	User : mongoose.model('User'),
 	Item : mongoose.model('Item')
 };
-var mongoip = process.env.OPENSHIFT_MONGODB_DB_HOST || 'localhost',
-	mongoport = process.env.OPENSHIFT_MONGODB_DB_PORT || '27017',
-	mongoauth = mongoip === 'localhost' ? '' : 'admin:6PirN1GSpzB3',
-	dbname = mongoip === 'localhost' ? 'amazon' : 'pako';
 
-	mongoose.connect('mongodb://'+mongoauth+mongoip+':'+mongoport+'/'+dbname);
+// default to a 'localhost' configuration:
+var connection_string = '127.0.0.1:27017/amazon';
+// if OPENSHIFT env variables are present, use the available connection info:
+if(process.env.OPENSHIFT_MONGODB_DB_PASSWORD){
+  connection_string = process.env.OPENSHIFT_MONGODB_DB_USERNAME + ":" +
+  process.env.OPENSHIFT_MONGODB_DB_PASSWORD + "@" +
+  process.env.OPENSHIFT_MONGODB_DB_HOST + ':' +
+  process.env.OPENSHIFT_MONGODB_DB_PORT + '/' +
+  process.env.OPENSHIFT_APP_NAME;
+}
+
+	mongoose.connect('mongodb://' + connection_string);
 
 module.exports = db;
