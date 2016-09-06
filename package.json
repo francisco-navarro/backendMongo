@@ -2,7 +2,7 @@
   "name": "backend-mongo",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server/app.js",
   "scripts": {
     "test": "istanbul cover --include-all-sources jasmine-node test/**/*.spec.js",
     "start": "node server/app.js"
