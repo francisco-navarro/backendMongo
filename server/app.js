@@ -53,4 +53,4 @@ app.listen(3000, function() {
 
 
 itemController.watchPrices();
-cron.schedule('*/10 * * * *', itemController.watchPrices);
+cron.schedule('* */6 * * *', itemController.watchPrices);
