@@ -54,4 +54,4 @@ app.listen(server_port, server_ip_address, function() {
   console.log('App listening on port ' + server_port);
 });
 
-cron.schedule('* */6 * * *', itemController.watchPrices);
+cron.schedule('* */1 * * *', itemController.watchPrices);
