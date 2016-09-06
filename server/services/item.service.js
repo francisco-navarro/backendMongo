@@ -7,17 +7,31 @@ var options = {
 
 var client;
 
-function init(aws) {
-  console.log('Configuring AWS server...');
+var Item = function(data){
+  this.asin = data.ASIN,
+  this.description = data.ItemAttributes.Title
+  if (data.OfferSummary.LowestNewPrice) {
+    this.price = data.OfferSummary.LowestNewPrice.Amount;
+    this.currency = data.OfferSummary.LowestNewPrice.CurrencyCode;
+  }
+  this.formattedPrice = (this.price / 100) + ' ' + this.currency;
+};
 
+function init(aws) {
   client = aws.createProdAdvClient(credentials.accessKey,
     credentials.secretAccessKey,
     credentials.asssociateTag,
     options);
 }
 
-function get() {
-  //TODO
+function get(ASIN, callback) {
+  var query = {
+    ItemId: ASIN,
+    IdType: 'ASIN'
+  };
+  client.call('ItemLookup', query, function(res) {
+    return callback(null, new Item(res.Items.Item));
+  });
 }
 
 
@@ -28,10 +42,7 @@ function search(index, search, page, callback) {
     ItemPage: page
   };
 
-  client.call('ItemSearch', query, function(err, result) {
-    if (err) {
-      return callback(err);
-    }
+  client.call('ItemSearch', query, function(result) {
     if (!result.Items) {
       return callback('Not Found');
     }
@@ -46,15 +57,8 @@ function search(index, search, page, callback) {
 function getItemAttributes(items) {
   var list = [];
 
-  items.forEach(function(item) {
-    var parsed = {
-      id: item.ASIN,
-      title: item.ItemAttributes.Title
-    };
-    if (item.OfferSummary.LowestNewPrice) {
-      parsed.price = item.OfferSummary.LowestNewPrice.FormattedPrice;
-    }
-    list.push(parsed);
+  items.forEach(function(data) {
+    list.push(new Item(data));
   });
 
   return list;
