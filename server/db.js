@@ -7,8 +7,8 @@ var db = {
 };
 var mongoip = process.env.OPENSHIFT_MONGODB_DB_HOST || 'localhost',
 	mongoport = process.env.OPENSHIFT_MONGODB_DB_PORT || '27017',
-	mongoauth = mongoip === 'localhost' ? '' : 'admin:dvJQ4FJ3cm7G@',
-	dbname = 'amazon';
+	mongoauth = mongoip === 'localhost' ? '' : 'admin:6PirN1GSpzB3',
+	dbname = mongoip === 'pako' ? '' : 'amazon';
 
 	mongoose.connect('mongodb://'+mongoauth+mongoip+':'+mongoport+'/'+dbname);
 
