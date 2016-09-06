@@ -14,11 +14,10 @@ var Item = function(data){
     this.price = data.OfferSummary.LowestNewPrice.Amount;
     this.currency = data.OfferSummary.LowestNewPrice.CurrencyCode;
   }
-  this.formattedPrice = (this.price / 100) + this.currency;
+  this.formattedPrice = (this.price / 100) + ' ' + this.currency;
 };
 
 function init(aws) {
-
   client = aws.createProdAdvClient(credentials.accessKey,
     credentials.secretAccessKey,
     credentials.asssociateTag,

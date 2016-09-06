@@ -40,9 +40,11 @@
       });
       //ASSERT
       var expected = {
-        id: 'B00U5M3BDQ',
-        title: 'iPhone 6s Protector de Pantalla',
-        price: 'EUR 1,84'
+        asin: 'B00U5M3BDQ',
+        description: 'iPhone 6s Protector de Pantalla',
+        price: '184',
+        currency : 'EUR',
+        formattedPrice : '1.84 EUR'
       };
       expect(clientMock.call).toHaveBeenCalledWith('ItemSearch', {
         SearchIndex: 'All',
