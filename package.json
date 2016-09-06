@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "istanbul cover --include-all-sources jasmine-node test/**/*.spec.js",
+    "test": "istanbul cover --include-all-sources -x \"**/mocks/**\" jasmine-node test/**/*.spec.js",
     "start": "node server/app.js",
     "postinstall": "npm install jasmine-node -g"
   },
