@@ -11,6 +11,8 @@ app.get('/', function(req, res) {
   res.send('It works');
 });
 
+// app.get('/items', itemController.search);
+
 app.get('/items', itemController.get);
 
 app.get('/users', function(req, res, next) {
