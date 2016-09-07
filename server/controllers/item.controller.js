@@ -43,28 +43,45 @@ function get(request, response){
   });
 }
 
-function update(item){
+function buildNotification(item, updatedItem, target) {
+  var msg = 'Articulo ' + item.description;
+
+  if(updatedItem.price < item.price){
+    msg+=' ha bajado de precio.';
+  } else {
+    msg+=' ha subido de precio.';
+  }
+  msg+= ' Nuevo precio ' + updatedItem.formattedPrice;
+  pushNotifier.send(msg, target);
+}
+
+function update(item, updatedItem) {
+  item.price = parseInt(updatedItem.price, 10);
+  item.save(function(err, item2){
+    if(err){
+      console.error(err);
+    }
+  });
+}
+
+function compare(item){
   itemService.get(item.asin, function(err, result){
     if(item.price !== parseInt(result.price, 10)){
-      pushNotifier.send(item, result);
-      item.price = parseInt(result.price, 10);
-      item.save(function(err, item2){
-        if(err){
-          console.error(err);
-        }
-      });
+      //Aqui se puede enviar el item.user.deviceToken en vez del username
+      buildNotification(item, result, item.user.username);
+      update(item, result);
     }
   });
 }
 
 function watchPrices() {
   console.log('Consultando precios...');
-  db.Item.find({}, function(err, items){
+  db.Item.find({}).populate('user').exec(function(err, items){
     if (err){
       throw err;
     }
     items.forEach(function(item) {
-      update(item);
+      compare(item);
     });
   });
   console.log('Consulta terminada');
