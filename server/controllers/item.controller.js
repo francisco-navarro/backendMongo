@@ -5,6 +5,7 @@ var pushNotifier = require('./../services/pushNotifier.service');
 var successCode = 200;
 var almostSuccessCode = 209;
 var db = require('./../db');
+var TIME_TO_QUERY = 5000;
 
 var dbItems;
 
@@ -43,29 +44,55 @@ function get(request, response){
   });
 }
 
-function update(item){
-  itemService.get(item.asin, function(err, result){
-    if(item.price !== parseInt(result.price, 10)){
-      pushNotifier.send(item, result);
-      item.price = parseInt(result.price, 10);
-      item.save(function(err, item2){
-        if(err){
-          console.error(err);
-        }
-      });
+function buildNotification(item, updatedItem, target) {
+  var msg = 'Articulo ' + item.description;
+
+  if(updatedItem.price < item.price){
+    msg+=' ha bajado de precio.';
+  } else {
+    msg+=' ha subido de precio.';
+  }
+  msg+= ' Nuevo precio ' + updatedItem.formattedPrice;
+  pushNotifier.send(msg, target);
+}
+
+function update(item, updatedItem) {
+  item.price = parseInt(updatedItem.price, 10);
+  item.save(function(err, item2){
+    if(err){
+      console.error(err);
     }
   });
 }
 
+function compare(item){
+    console.log(item.asin);
+    itemService.get(item.asin, function(err, result){
+      if(item.price !== parseInt(result.price, 10)){
+        //Aqui se puede enviar el item.user.deviceToken en vez del username
+        buildNotification(item, result, item.user.username);
+        update(item, result);
+      }
+    });
+}
+
 function watchPrices() {
   console.log('Consultando precios...');
-  db.Item.find({}, function(err, items){
+  db.Item.find({}).populate('user').exec(function(err, items){
     if (err){
       throw err;
     }
-    items.forEach(function(item) {
-      update(item);
-    });
+
+    compareItems(0, items);
+    function compareItems(index, items) {
+        if(items.length > index) {
+            setTimeout(function() {
+                compare(items[index]);
+                compareItems(++index, items);
+            }, TIME_TO_QUERY);
+        }
+    }
+
   });
   console.log('Consulta terminada');
 }
