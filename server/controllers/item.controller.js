@@ -9,6 +9,10 @@ var TIME_TO_QUERY = 5000;
 
 var dbItems;
 
+/*Inicializar el servidor de APN
+pushNotifier.init();
+*/
+
 function init(db){
   // dbItems = db;
   itemService.init(aws);
@@ -44,8 +48,11 @@ function get(request, response){
   });
 }
 
-function buildNotification(item, updatedItem, target) {
-  var msg = 'Articulo ' + item.description;
+function buildNotification(item, updatedItem, token) {
+  var params = {};
+  var msg;
+
+  msg = 'Articulo ' + item.description;
 
   if(updatedItem.price < item.price){
     msg+=' ha bajado de precio.';
@@ -53,7 +60,12 @@ function buildNotification(item, updatedItem, target) {
     msg+=' ha subido de precio.';
   }
   msg+= ' Nuevo precio ' + updatedItem.formattedPrice;
-  pushNotifier.send(msg, target);
+
+  params.message = msg;
+  params.token = token;
+  params.from = 'Pako App';
+
+  pushNotifier.send(params);
 }
 
 function update(item, updatedItem) {
@@ -82,6 +94,7 @@ function watchPrices() {
     if (err){
       throw err;
     }
+
     compareItems(0, items);
     function compareItems(index, items) {
         if(items.length > index) {
