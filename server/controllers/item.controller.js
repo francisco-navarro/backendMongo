@@ -82,7 +82,6 @@ function watchPrices() {
     if (err){
       throw err;
     }
-
     compareItems(0, items);
     function compareItems(index, items) {
         if(items.length > index) {
@@ -92,7 +91,6 @@ function watchPrices() {
             }, TIME_TO_QUERY);
         }
     }
-
   });
   console.log('Consulta terminada');
 }

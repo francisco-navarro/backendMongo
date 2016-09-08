@@ -66,6 +66,4 @@ app.listen(server_port, server_ip_address, function() {
   console.log('App listening on port ' + server_port);
 });
 
-//Se envia cada hora
-
 cron.schedule('0 0 * * * *', itemController.watchPrices);
