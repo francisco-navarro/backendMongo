@@ -9,9 +9,7 @@ var TIME_TO_QUERY = 5000;
 
 var dbItems;
 
-/*Inicializar el servidor de APN
 pushNotifier.init();
-*/
 
 function init(db){
   // dbItems = db;
@@ -82,7 +80,7 @@ function compare(item){
     itemService.get(item.asin, function(err, result){
       if(item.price !== parseInt(result.price, 10)){
         //Aqui se puede enviar el item.user.deviceToken en vez del username
-        buildNotification(item, result, item.user.username);
+        buildNotification(item, result, item.user.deviceToken);
         update(item, result);
       }
     });
@@ -105,7 +103,6 @@ function watchPrices() {
         }
     }
   });
-  console.log('Consulta terminada');
 }
 
 module.exports = init;

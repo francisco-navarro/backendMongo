@@ -1,15 +1,17 @@
 var apn  = require("apn");
 var path = require('path');
 var winston = require('winston');
+var credentials = require('../../credentials');
 
 var apnError = function(err){
     console.log("APN Error:", err);
 }
 
 var options = {
-    "cert": "cert.pem",
-    "key":  "key.pem",
-    "passphrase": null,
+    "production": false,
+    "cert": process.env.HOME + "/Developer/salva_certs/cert.pem",
+    "key": process.env.HOME + "/Developer/salva_certs/key.pem",
+    "passphrase": credentials.passphrase,
     "gateway": "gateway.sandbox.push.apple.com",
     "port": 2195,
     "enhanced": true,
@@ -45,19 +47,19 @@ function send(params) {
   note.payload = {'messageFrom': params.from};
 
   if(apnConnection) {
-      apnConnection.pushNotification(note, myDevice);
+    apnConnection.pushNotification(note, myDevice);
   }
 }
 
 function init() {
   apnConnection = new apn.Connection(options);
 
-  feedback = new apn.Feedback(feedBackOptions);
+  /*feedback = new apn.Feedback(feedBackOptions);
   feedback.on("feedback", function(devices) {
       devices.forEach(function(item) {
           //TODO Do something with item.device and item.time;
       });
-  });
+  });*/
 }
 
 function mock(params){
@@ -67,5 +69,5 @@ function mock(params){
 
 module.exports = {
 	init: init,
-	send: mock // cambiar por send cuando tengamos las notificaciones
+	send: send // cambiar por mock si se quiere log en vez de notificaciones
 };
